@@ -1,0 +1,46 @@
+cuda: True
+gpu_ids: 0
+load_from: false
+work_dir: 'Unet3p_output'
+epoch: 20
+batch_size: 2
+checkpoint_iter: 10
+labels: background, build
+num_classes: 2
+
+# model setting
+#arch: 'UNet'
+#arch_params: {in_channels: 3, n_classes: 2, feature_scale: 4, is_deconv: True, is_batchnorm: True}
+arch: 'UNet_3Plus'
+arch_params: {in_channels: 3, n_classes: 2, feature_scale: 4, is_deconv: True, is_batchnorm: True}
+
+
+deep_supervision: False
+resize_w: 512
+resize_h: 512
+test_size: 0.2
+
+# loss
+loss: 'FocalLoss,IOULoss'
+loss_params: {FocalLoss:{gamma: 2, alpha: [0.5, 0.5]}, IOULoss:{}}
+
+# optimizer
+optimizer: 'sgd_optim'
+optimizer_params: {lr: 0.001, momentum: 0.9, weight_decay: 0.0001, nesterov: False}
+
+# scheduler
+scheduler: 'CosineAnnealingLR'
+scheduler_params: {T_max: 200, eta_min: 0.00001}
+
+# dataset
+data_type: "NormalDataLoader"
+images_path: '/media/DATA/liyi/project/database/unnet_test/images'
+masks_path: '/media/DATA/liyi/project/database/unnet_test/masks'
+img_ext: '.tif'
+mask_ext: '.tif'
+num_workers: 0
+
+# test dataset (only run test.py, the following params is used)
+test_path: '/media/DATA/liyi/project/Unet3+/demo/test_data'
+test_img_ext: '.tif'
+load_from_to_test: '/media/DATA/liyi/project/Unet3+/output/model_best.pth'
